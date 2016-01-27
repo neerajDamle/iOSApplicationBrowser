@@ -13,6 +13,7 @@
 		0726E4A81C590073008BD1E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0726E4A61C590073008BD1E9 /* Main.storyboard */; };
 		0726E4AA1C590073008BD1E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0726E4A91C590073008BD1E9 /* Assets.xcassets */; };
 		0726E4AD1C590073008BD1E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0726E4AB1C590073008BD1E9 /* LaunchScreen.storyboard */; };
+		0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		0726E4A91C590073008BD1E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0726E4AC1C590073008BD1E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0726E4AE1C590073008BD1E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0726E4B51C590138008BD1E9 /* BrowseAllInstalledApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowseAllInstalledApplication.h; sourceTree = "<group>"; };
+		0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowseAllInstalledApplication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		0726E49C1C590073008BD1E9 /* iOSAppBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				0726E4B41C590124008BD1E9 /* AppList */,
 				0726E4A01C590073008BD1E9 /* AppDelegate.h */,
 				0726E4A11C590073008BD1E9 /* AppDelegate.m */,
 				0726E4A31C590073008BD1E9 /* ViewController.h */,
@@ -77,6 +81,15 @@
 				0726E49E1C590073008BD1E9 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0726E4B41C590124008BD1E9 /* AppList */ = {
+			isa = PBXGroup;
+			children = (
+				0726E4B51C590138008BD1E9 /* BrowseAllInstalledApplication.h */,
+				0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */,
+			);
+			path = AppList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0726E4A51C590073008BD1E9 /* ViewController.m in Sources */,
+				0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */,
 				0726E4A21C590073008BD1E9 /* AppDelegate.m in Sources */,
 				0726E49F1C590073008BD1E9 /* main.m in Sources */,
 			);
