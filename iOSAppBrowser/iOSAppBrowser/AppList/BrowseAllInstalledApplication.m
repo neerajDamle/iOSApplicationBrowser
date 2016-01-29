@@ -11,6 +11,7 @@
 #include <objc/runtime.h>
 
 #import <UIKit/UIImage.h>
+#import "Application.h"
 
 /*
  @param format
@@ -165,33 +166,60 @@ NSMutableArray* browseInstalledAppListForIos7()
         if((appTags == nil) || (appTags.count == 0))
         {
             appTags = @[@"No tags"];
-//            NSLog(@"App tags are nil for \"%@\"",appIdentifier);
-        }
-        else
-        {
-//            NSLog(@"App tags for \"%@\": %@",appIdentifier,appTags);
         }
         
-        if ([appType isEqualToString:@"User"]) {
-            
+        if ([appType isEqualToString:@"User"])
+        {
             NSString *appName;
-            if (localizedName==nil) {
-                if (localizedShortName==nil) {
-                    appName=@"Unknown";
-                }else{
-                    appName =localizedName;
+            if(localizedName == nil)
+            {
+                if(localizedShortName == nil)
+                {
+                    appName = @"Unknown";
                 }
-            }else{
-                appName=localizedName;
+                else
+                {
+                    appName = localizedName;
+                }
+            }
+            else
+            {
+                appName = localizedName;
             }
             
-            if (bundleVersion == nil) {
+            if(bundleVersion == nil)
+            {
                 bundleVersion = @"1.0";
             }
-            if (shortVersion == nil) {
+            if(shortVersion == nil)
+            {
                 shortVersion = @"1.0";
             }
            
+            UIImage *iconImage = [self appIconImageForBundleIdentifier:appIdentifier];
+            NSString *strIconImage = nil;
+            if(iconImage)
+            {
+                NSData *imageData = UIImagePNGRepresentation(iconImage);
+                if(imageData)
+                {
+                    strIconImage = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+                }
+                else
+                {
+                    strIconImage = @"";
+                }
+            }
+            Application *application = [[Application alloc] initWithBundleID:appIdentifier name:localizedName version:bundleVersion];
+            application.bundleShortVersion = shortVersion;
+            application.iconImage = strIconImage;
+            application.teamID = teamID;
+            application.vendorName = vendorName;
+            application.sourceAppIdentifier = sourceAppIdentifier;
+            application.profileValidated = isProfileValidated;
+            application.installType = installType;
+            application.originalInstallType = originalInstallType;
+            
             NSDictionary* appDictionary = @{
                                             @"bundleid" : appIdentifier,
                                             @"bundleShortVersion" : shortVersion,
@@ -209,7 +237,8 @@ NSMutableArray* browseInstalledAppListForIos7()
                                             @"appTags" : appTags
                                             };
             
-            [appList addObject:appDictionary];
+//            [appList addObject:appDictionary];
+            [appList addObject:application];
         }
     }
     return appList;
@@ -229,7 +258,7 @@ NSMutableArray* browseInstalledAppListForIos7()
 #pragma mark- get installed app icon with identifier image default size 122x122
 + (UIImage *)appIconImageForBundleIdentifier:(NSString *)bundleId {
     
-    UIImage* iconImage = [UIImage _applicationIconImageForBundleIdentifier:bundleId format:11 scale:[UIScreen mainScreen].scale];
+    UIImage* iconImage = [UIImage _applicationIconImageForBundleIdentifier:bundleId format:0 scale:[UIScreen mainScreen].scale];
     return iconImage;
 }
 @end

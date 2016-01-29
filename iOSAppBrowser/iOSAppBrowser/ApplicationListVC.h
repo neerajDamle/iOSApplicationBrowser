@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ApplicationListVC.h
 //  iOSAppBrowser
 //
 //  Created by Neeraj Damle on 1/27/16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ApplicationListVC : UIViewController
 
 
 @end
