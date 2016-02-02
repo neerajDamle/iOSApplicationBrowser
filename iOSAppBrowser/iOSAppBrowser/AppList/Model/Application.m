@@ -62,6 +62,10 @@
     {
         value = self.vendorName;
     }
+    else if([key isEqualToString:APP_SIGNER_IDENTITY])
+    {
+        value = self.signerIdentity;
+    }
     if([key isEqualToString:APP_INSTALL_TYPE])
     {
         NSNumber *numInstallType = [NSNumber numberWithUnsignedLongLong:self.installType];
