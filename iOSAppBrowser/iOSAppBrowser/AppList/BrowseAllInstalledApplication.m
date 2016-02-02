@@ -9,6 +9,7 @@
 #import "BrowseAllInstalledApplication.h"
 #import <dlfcn.h>
 #include <objc/runtime.h>
+#import <objc/message.h>
 
 #import <UIKit/UIImage.h>
 #import "Application.h"
@@ -95,6 +96,48 @@ NSMutableArray* browseInstalledAppListForIos7()
     return nil;
 }
 
++ (void)openApplicationWithBundleID:(NSString *)bundleID
+{
+    Class LSApplicationWorkspace_class = objc_getClass("LSApplicationWorkspace");
+    NSObject* workspace = [LSApplicationWorkspace_class performSelector:@selector(defaultWorkspace)];
+    SEL selector = NSSelectorFromString(@"openApplicationWithBundleID:");
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[LSApplicationWorkspace_class instanceMethodSignatureForSelector:selector]];
+    [invocation setSelector:selector];
+    [invocation setTarget:workspace];
+    [invocation setArgument:&bundleID atIndex:2];
+    [invocation invoke];
+}
+
++ (void)getBundleDetails:(NSString *)bundleID
+{
+    Class LSBundleProxy_class = objc_getClass("LSBundleProxy");
+    NSObject *bundle = [[LSBundleProxy_class alloc] init];
+    SEL selector = NSSelectorFromString(@"bundleProxyForIdentifier:");
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[LSBundleProxy_class instanceMethodSignatureForSelector:selector]];
+    [invocation setSelector:selector];
+    [invocation setTarget:bundle];
+    [invocation setArgument:&bundleID atIndex:2];
+    [invocation invoke];
+    NSObject *returnValue;
+    [invocation getReturnValue:&returnValue];
+    NSLog(@"ret val class: %@",[returnValue class]);
+    
+    if(returnValue)
+    {
+        selector = NSSelectorFromString(@"bundleVersion");
+        invocation = [NSInvocation invocationWithMethodSignature:[LSBundleProxy_class instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:returnValue];
+//        [invocation setArgument:&bundleID atIndex:2];
+        [invocation invoke];
+        
+        NSString *bundleVersion;
+        [invocation getReturnValue:&bundleVersion];
+        NSLog(@"ret val class: %@",[bundleVersion class]);
+        NSLog(@"Bundle version: %@",bundleVersion);
+    }
+}
+
 + (NSMutableArray *)browseInstalledAppListForIos8{
     
     Class LSApplicationWorkspace_class = objc_getClass("LSApplicationWorkspace");
@@ -104,6 +147,8 @@ NSMutableArray* browseInstalledAppListForIos7()
     NSMutableArray* appList = [NSMutableArray array];
     
     for (id object in list) {
+        
+//        NSLog(@"Object class: %@",[object class]);
         
         NSString *shortVersion=[object performSelector:@selector(shortVersionString)];
 //        NSString *msVersion=[object performSelector:@selector(minimumSystemVersion)];
@@ -125,6 +170,23 @@ NSMutableArray* browseInstalledAppListForIos7()
         if(vendorName == nil)
         {
             vendorName = @"NA";
+        }
+        
+        NSString *signerIdentity = [object performSelector:@selector(signerIdentity)];
+//        NSLog(@"Bundle id: %@",appIdentifier);
+//        NSLog(@"Signer identity: %@",signerIdentity);
+        if(signerIdentity == nil)
+        {
+            signerIdentity = @"NA";
+        }
+        
+        unsigned int appHash = [object performSelector:@selector(hash)];
+        NSString *strAppHash = [NSString stringWithFormat:@"%u",appHash];
+        NSLog(@"Bundle id: %@",appIdentifier);
+        NSLog(@"App hash: %@",strAppHash);
+        if(strAppHash == nil)
+        {
+            strAppHash = @"NA";
         }
         
         unsigned long long installType = [object performSelector:@selector(installType)];
@@ -215,6 +277,7 @@ NSMutableArray* browseInstalledAppListForIos7()
             application.iconImage = strIconImage;
             application.teamID = teamID;
             application.vendorName = vendorName;
+            application.signerIdentity = signerIdentity;
             application.sourceAppIdentifier = sourceAppIdentifier;
             application.profileValidated = isProfileValidated;
             application.installType = installType;
@@ -227,6 +290,7 @@ NSMutableArray* browseInstalledAppListForIos7()
                                             @"appName" : localizedName,
                                             @"teamID" : teamID,
                                             @"vendorName" : vendorName,
+                                            @"signerIdentity": signerIdentity,
                                             @"installType" : strInstallType,
                                             @"originalInstallType" : strOriginalInstallType,
                                             @"profileValidated" : strIsProfileValidated,
@@ -260,5 +324,220 @@ NSMutableArray* browseInstalledAppListForIos7()
     
     UIImage* iconImage = [UIImage _applicationIconImageForBundleIdentifier:bundleId format:0 scale:[UIScreen mainScreen].scale];
     return iconImage;
+}
+
+
++ (void)getDeviceDetails
+{
+    NSString *clName = @"AADeviceInfo";
+    Class AADeviceInfo_class = objc_getClass(clName.UTF8String);
+    if(Nil == AADeviceInfo_class)
+    {
+        NSLog(@"AADeviceInfo class is nil");
+        
+        const char *path="/System/Library/PrivateFrameworks/AppleAccount.framework/AppleAccount";
+        void* lib = dlopen(path, RTLD_LAZY);
+        if (lib)
+        {
+            AADeviceInfo_class = objc_getClass(clName.UTF8String);
+            if(Nil == AADeviceInfo_class)
+            {
+                NSLog(@"AADeviceInfo class is still nil");
+                return;
+            }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+            
+            /*AVAILABLE VALUES*/
+                //appleIDClientIdentifier
+                //buildVersion
+                //clientInfoHeader
+                //deviceClass
+                //deviceColor
+                //deviceEnclosureColor
+                //deviceInfoDictionary
+                //deviceName
+                //hasCellularCapability
+                //modelNumber
+                //osName
+                //osVersion
+                //productType
+                //productVersion
+                //regionCode
+                //storageCapacity
+                //userAgentHeader
+            
+            /*UNAVAILABLE VALUES*/
+                //apnsToken
+                //internationalMobileEquipmentIdentity
+                //mobileEquipmentIdentifier
+                //serialNumber
+                //udid
+                //wifiMacAddress
+            
+            SEL selector = NSSelectorFromString(@"regionCode");
+            NSObject *aaDeviceObj = [[AADeviceInfo_class alloc] init];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[AADeviceInfo_class instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:aaDeviceObj];
+            [invocation invoke];
+            NSString *returnValue;
+            [invocation getReturnValue:&returnValue];
+            NSLog(@"ret val class: %@",[returnValue class]);
+            NSLog(@"Returned %@", returnValue);
+            
+//            BOOL boolReturnValue;
+//            [invocation getReturnValue:&boolReturnValue];
+//            NSLog(@"Returned %d", boolReturnValue);
+            
+//            objc_msgSend([[AADeviceInfo_class alloc] init], sel_getUid("udid"));
+        }
+    }
+}
+
++ (void)getAccountDetails
+{
+    NSString *clName = @"AAAccountManager";
+    Class AAAccount_class = objc_getClass(clName.UTF8String);
+    if(Nil == AAAccount_class)
+    {
+        NSLog(@"AAAccount class is nil");
+        
+        const char *path="/System/Library/PrivateFrameworks/AppleAccount.framework/AppleAccount";
+        void* lib = dlopen(path, RTLD_LAZY);
+        if (lib)
+        {
+            AAAccount_class = objc_getClass(clName.UTF8String);
+            if(Nil == AAAccount_class)
+            {
+                NSLog(@"AAAccount class is still nil");
+                return;
+            }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+            
+            /*AVAILABLE VALUES*/
+            //appleIDClientIdentifier
+            //buildVersion
+            //clientInfoHeader
+            //deviceClass
+            //deviceColor
+            //deviceEnclosureColor
+            //deviceInfoDictionary
+            //deviceName
+            //hasCellularCapability
+            //modelNumber
+            //osName
+            //osVersion
+            //productType
+            //productVersion
+            //regionCode
+            //storageCapacity
+            //userAgentHeader
+            
+            /*UNAVAILABLE VALUES*/
+            //apnsToken
+            //internationalMobileEquipmentIdentity
+            //mobileEquipmentIdentifier
+            //serialNumber
+            //udid
+            //wifiMacAddress
+            
+            SEL selector = NSSelectorFromString(@"accounts");
+            NSObject *aaAccountObj = [[AAAccount_class alloc] init];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[AAAccount_class instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:aaAccountObj];
+            [invocation invoke];
+//            NSString *returnValue;
+//            [invocation getReturnValue:&returnValue];
+//            NSLog(@"ret val class: %@",[returnValue class]);
+//            NSLog(@"Returned %@", returnValue);
+            
+            NSArray *arrReturnValue;
+            [invocation getReturnValue:&arrReturnValue];
+            NSLog(@"Returned %@", arrReturnValue);
+
+            
+//            BOOL boolReturnValue;
+//            [invocation getReturnValue:&boolReturnValue];
+//            NSLog(@"Returned %d", boolReturnValue);
+//            
+//            objc_msgSend([[AADeviceInfo_class alloc] init], sel_getUid("udid"));
+        }
+    }
+}
+
++ (void)getNetworkDetails
+{
+    NSString *clName = @"NWNetworkDescription";
+    Class NWStatisticsTCPSource_class = objc_getClass(clName.UTF8String);
+    if(Nil == NWStatisticsTCPSource_class)
+    {
+        NSLog(@"NWStatisticsTCPSource class is nil");
+        
+        const char *path="/System/Library/PrivateFrameworks/Network.framework/Network";
+        void* lib = dlopen(path, RTLD_LAZY);
+        if (lib)
+        {
+            NWStatisticsTCPSource_class = objc_getClass(clName.UTF8String);
+            if(Nil == NWStatisticsTCPSource_class)
+            {
+                NSLog(@"NWStatisticsTCPSource class is still nil");
+                return;
+            }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+            
+            /*AVAILABLE VALUES*/
+            //appleIDClientIdentifier
+            //buildVersion
+            //clientInfoHeader
+            //deviceClass
+            //deviceColor
+            //deviceEnclosureColor
+            //deviceInfoDictionary
+            //deviceName
+            //hasCellularCapability
+            //modelNumber
+            //osName
+            //osVersion
+            //productType
+            //productVersion
+            //regionCode
+            //storageCapacity
+            //userAgentHeader
+            
+            /*UNAVAILABLE VALUES*/
+            //apnsToken
+            //internationalMobileEquipmentIdentity
+            //mobileEquipmentIdentifier
+            //serialNumber
+            //udid
+            //wifiMacAddress
+            
+            SEL selector = NSSelectorFromString(@"description");
+            NSObject *nwStatisticsTCPSourceObj = [[NWStatisticsTCPSource_class alloc] init];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[NWStatisticsTCPSource_class instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:nwStatisticsTCPSourceObj];
+            [invocation invoke];
+            NSString *returnValue;
+            [invocation getReturnValue:&returnValue];
+            NSLog(@"ret val class: %@",[returnValue class]);
+            NSLog(@"Returned %@", returnValue);
+            
+//            NSArray *arrReturnValue;
+//            [invocation getReturnValue:&arrReturnValue];
+//            NSLog(@"Returned %@", arrReturnValue);
+            
+            
+            //            BOOL boolReturnValue;
+            //            [invocation getReturnValue:&boolReturnValue];
+            //            NSLog(@"Returned %d", boolReturnValue);
+            //
+            //            objc_msgSend([[AADeviceInfo_class alloc] init], sel_getUid("udid"));
+        }
+    }
 }
 @end

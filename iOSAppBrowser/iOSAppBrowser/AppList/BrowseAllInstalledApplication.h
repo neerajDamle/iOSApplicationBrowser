@@ -18,4 +18,11 @@
 #pragma mark
 #pragma mark- get installed app icon with identifier image default size 122x122
 + (UIImage *)appIconImageForBundleIdentifier:(NSString *)bundleId;
+
++ (void)openApplicationWithBundleID:(NSString *)bundleID;
++ (void)getBundleDetails:(NSString *)bundleID;
++ (void)getDeviceDetails;
++ (void)getAccountDetails;
++ (void)getNetworkDetails;
+
 @end

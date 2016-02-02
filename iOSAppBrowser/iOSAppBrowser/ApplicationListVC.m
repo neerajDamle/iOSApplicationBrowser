@@ -28,8 +28,16 @@
     
     self.navigationItem.title = @"Applications";
     
+//    [BrowseAllInstalledApplication getDeviceDetails];
+//    [BrowseAllInstalledApplication getAccountDetails];
+//    [BrowseAllInstalledApplication getNetworkDetails];
+    
     applications = [BrowseAllInstalledApplication browseInstalledAppList];
     selectedRow = -1;
+    
+//    NSString *bundleID = @"com.bigcavegames.blockybird3d";
+//    [BrowseAllInstalledApplication openApplicationWithBundleID:bundleID];
+//    [BrowseAllInstalledApplication getBundleDetails:bundleID];
 }
 
 - (void)didReceiveMemoryWarning {
