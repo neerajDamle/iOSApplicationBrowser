@@ -354,8 +354,6 @@ NSMutableArray* browseInstalledAppListForIos7()
         aSelector = NSSelectorFromString(PARAM_SEQUENCE_NUMBER);
         unsigned int appSequenceNumber = [object performSelector:aSelector];
         NSString *strAppSequenceNumber = [NSString stringWithFormat:@"%u",appSequenceNumber];
-        NSLog(@"Bundle id: %@",appIdentifier);
-        NSLog(@"App sequence number: %@",strAppSequenceNumber);
         if(strAppSequenceNumber == nil)
         {
             strAppSequenceNumber = @"NA";
@@ -399,46 +397,67 @@ NSMutableArray* browseInstalledAppListForIos7()
             appTags = @[@"No tags"];
         }
         
+        aSelector = NSSelectorFromString(@"companionApplicationIdentifier");
+        NSString *companionApplicationIdentifier = [object performSelector:aSelector];
+        if(companionApplicationIdentifier == nil)
+        {
+            companionApplicationIdentifier = @"NA";
+        }
+        
+        aSelector = NSSelectorFromString(@"storeFront");
+        NSNumber *storeFront = [object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(@"isAdHocCodeSigned");
+        BOOL isAdHocCodeSigned = [object performSelector:aSelector];
+        NSString *strIsAdHocCodeSigned = [NSString stringWithFormat:@"%@",isAdHocCodeSigned ? @"YES" : @"NO"];
+        
+        aSelector = NSSelectorFromString(@"registeredDate");
+        NSDate *registeredDate = [object performSelector:aSelector];
+        
         NSLog(@"Bundle ID: %@",appIdentifier);
-        NSLog(@"Short Version: %@",shortVersion);
-        NSLog(@"Bundle Version: %@",bundleVersion);
-        NSLog(@"Signer identity: %@",signerIdentity);
-        NSLog(@"Bundle Executable: %@",bundleExecutable);
-        NSLog(@"Entitlements: %@",entitlements);
-        NSLog(@"Environment Variables: %@",environmentVariables);
-        NSLog(@"Bundle URL: %@",strBundleURL);
-        NSLog(@"Bundle Container URL: %@",strBundleContainerURL);
-        
-        NSLog(@"App Short Name: %@",localizedShortName);
-        NSLog(@"App Name: %@",localizedName);
-        NSLog(@"App Type: %@",appType);
-        NSLog(@"Team ID: %@",teamID);
-        NSLog(@"Vendor Name: %@",vendorName);
-        NSLog(@"Source App Identifier: %@",sourceAppIdentifier);
-        
-        NSLog(@"Container URL: %@",strContainerURL);
-        NSLog(@"Data Container URL: %@",strDataContainerURL);
-        
-        NSLog(@"AppStore Receipt URL: %@",strAppStoreReceiptURL);
-
-        NSLog(@"Cache GUID: %@",strCacheGUID);
-        NSLog(@"Unique Identifier: %@",strUniqueIdentifier);
-        NSLog(@"Mach O UUIDs: %@",machOUUIDs);
-        
-        NSLog(@"Install Type: %@",strInstallType);
-        NSLog(@"Original Install Type: %@",strOriginalInstallType);
-        NSLog(@"Sequence Number: %@",strAppSequenceNumber);
-        NSLog(@"App hash: %@",strAppHash);
-        
-        NSLog(@"Found backing bundle: %@",strFoundBackingBundle);
-        
-        NSLog(@"Profile Validate: %@",strIsProfileValidated);
-        NSLog(@"Is Installed: %@",strIsInstalled);
-        NSLog(@"Is Restricted: %@",strIsRestricted);
-        
-        NSLog(@"Store Cohort Metadata: %@",storeCohortMetadata);
-        NSLog(@"App tags: %@",appTags);
-        
+//        NSLog(@"Short Version: %@",shortVersion);
+//        NSLog(@"Bundle Version: %@",bundleVersion);
+//        NSLog(@"Signer identity: %@",signerIdentity);
+//        NSLog(@"Bundle Executable: %@",bundleExecutable);
+//        NSLog(@"Entitlements: %@",entitlements);
+//        NSLog(@"Environment Variables: %@",environmentVariables);
+//        NSLog(@"Bundle URL: %@",strBundleURL);
+//        NSLog(@"Bundle Container URL: %@",strBundleContainerURL);
+//        
+//        NSLog(@"App Short Name: %@",localizedShortName);
+//        NSLog(@"App Name: %@",localizedName);
+//        NSLog(@"App Type: %@",appType);
+//        NSLog(@"Team ID: %@",teamID);
+//        NSLog(@"Vendor Name: %@",vendorName);
+//        NSLog(@"Source App Identifier: %@",sourceAppIdentifier);
+//        
+//        NSLog(@"Container URL: %@",strContainerURL);
+//        NSLog(@"Data Container URL: %@",strDataContainerURL);
+//        
+//        NSLog(@"AppStore Receipt URL: %@",strAppStoreReceiptURL);
+//
+//        NSLog(@"Cache GUID: %@",strCacheGUID);
+//        NSLog(@"Unique Identifier: %@",strUniqueIdentifier);
+//        NSLog(@"Mach O UUIDs: %@",machOUUIDs);
+//        
+//        NSLog(@"Install Type: %@",strInstallType);
+//        NSLog(@"Original Install Type: %@",strOriginalInstallType);
+//        NSLog(@"Sequence Number: %@",strAppSequenceNumber);
+//        NSLog(@"App hash: %@",strAppHash);
+//        
+//        NSLog(@"Found backing bundle: %@",strFoundBackingBundle);
+//        
+//        NSLog(@"Profile Validate: %@",strIsProfileValidated);
+//        NSLog(@"Is Installed: %@",strIsInstalled);
+//        NSLog(@"Is Restricted: %@",strIsRestricted);
+//        
+//        NSLog(@"Store Cohort Metadata: %@",storeCohortMetadata);
+//        NSLog(@"App tags: %@",appTags);
+//        
+//        NSLog(@"Companion App Identifier: %@",companionApplicationIdentifier);
+//        NSLog(@"Store front: %@",storeFront);
+//        NSLog(@"Is AdHoc Code Signed: %@",strIsAdHocCodeSigned);
+//        NSLog(@"Registered Date: %@",registeredDate);
         
         if ([appType isEqualToString:@"User"])
         {
