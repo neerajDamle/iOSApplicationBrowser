@@ -44,8 +44,45 @@
 @end
 
 
+static NSString *PARAM_APPLICATION_IDENTIFIER = @"applicationIdentifier";
+static NSString *PARAM_SHORT_VERSION_STRING = @"shortVersionString";
+static NSString *PARAM_BUNDLE_VERSION = @"bundleVersion";
+static NSString *PARAM_SIGNER_IDENTITY = @"signerIdentity";
+static NSString *PARAM_BUNDLE_EXECUTABLE = @"bundleExecutable";
+static NSString *PARAM_ENTITLEMENTS = @"entitlements";
+static NSString *PARAM_ENVIRONMENT_VARIABLES = @"environmentVariables";
+static NSString *PARAM_BUNDLE_URL = @"bundleURL";
+static NSString *PARAM_BUNDLE_CONTAINER_URL = @"bundleContainerURL";
 
+static NSString *PARAM_LOCALIZED_NAME = @"localizedName";
+static NSString *PARAM_LOCALIZED_SHORT_NAME = @"localizedShortName";
+static NSString *PARAM_APPLICATION_TYPE = @"applicationType";
+static NSString *PARAM_TEAM_ID = @"teamID";
+static NSString *PARAM_VENDOR_NAME = @"vendorName";
+static NSString *PARAM_SOURCE_APP_IDENTIFIER = @"sourceAppIdentifier";
 
+static NSString *PARAM_CONTAINER_URL = @"containerURL";
+static NSString *PARAM_DATA_CONTAINER_URL = @"dataContainerURL";
+
+static NSString *PARAM_APPSTORE_RECEIPT_URL = @"appStoreReceiptURL";
+
+static NSString *PARAM_CACHE_GUID = @"cacheGUID";
+static NSString *PARAM_UNIQUE_IDENTIFIER = @"uniqueIdentifier";
+static NSString *PARAM_MACH_O_UUIDS = @"machOUUIDs";
+
+static NSString *PARAM_INSTALL_TYPE = @"installType";
+static NSString *PARAM_ORIGINAL_INSTALL_TYPE = @"originalInstallType";
+static NSString *PARAM_SEQUENCE_NUMBER = @"sequenceNumber";
+static NSString *PARAM_HASH = @"hash";
+
+static NSString *PARAM_FOUND_BACKING_BUNDLE = @"foundBackingBundle";
+
+static NSString *PARAM_PROFILE_VALIDATED = @"profileValidated";
+static NSString *PARAM_IS_INSTALLED = @"isInstalled";
+static NSString *PARAM_IS_RESTRICTED = @"isRestricted";
+
+static NSString *PARAM_STORE_COHORT_METADATA = @"storeCohortMetadata";
+static NSString *PARAM_APP_TAGS = @"appTags";
 
 @implementation BrowseAllInstalledApplication
 
@@ -146,89 +183,262 @@ NSMutableArray* browseInstalledAppListForIos7()
     
     NSMutableArray* appList = [NSMutableArray array];
     
-    for (id object in list) {
+    for (id object in list)
+    {
+        SEL aSelector = NSSelectorFromString(PARAM_APPLICATION_IDENTIFIER);
+        NSString *appIdentifier=[object performSelector:aSelector];
         
-//        NSLog(@"Object class: %@",[object class]);
-        
-        NSString *shortVersion=[object performSelector:@selector(shortVersionString)];
+        aSelector = NSSelectorFromString(PARAM_SHORT_VERSION_STRING);
+        NSString *shortVersion=[object performSelector:aSelector];
 //        NSString *msVersion=[object performSelector:@selector(minimumSystemVersion)];
-        NSString *bundleVersion=[object performSelector:@selector(bundleVersion)];
-        NSString *appIdentifier=[object performSelector:@selector(applicationIdentifier)];
-        NSString *appType=[object performSelector:@selector(applicationType)];
-        NSString *localizedName=[object performSelector:@selector(localizedName)];
-        NSString *localizedShortName=[object performSelector:@selector(localizedShortName)];
-//        NSNumber *staticDiskUsage=[object performSelector:@selector(staticDiskUsage)];
-//        NSString *resourcesDirectoryURL=[object performSelector:@selector(resourcesDirectoryURL)];
         
-        NSString *teamID = [object performSelector:@selector(teamID)];
-        if(teamID == nil)
-        {
-            teamID = @"NA";
-        }
+        aSelector = NSSelectorFromString(PARAM_BUNDLE_VERSION);
+        NSString *bundleVersion=[object performSelector:aSelector];
         
-        NSString *vendorName = [object performSelector:@selector(vendorName)];
-        if(vendorName == nil)
-        {
-            vendorName = @"NA";
-        }
-        
-        NSString *signerIdentity = [object performSelector:@selector(signerIdentity)];
-//        NSLog(@"Bundle id: %@",appIdentifier);
-//        NSLog(@"Signer identity: %@",signerIdentity);
+        aSelector = NSSelectorFromString(PARAM_SIGNER_IDENTITY);
+        NSString *signerIdentity = [object performSelector:aSelector];
         if(signerIdentity == nil)
         {
             signerIdentity = @"NA";
         }
         
-        unsigned int appHash = [object performSelector:@selector(hash)];
-        NSString *strAppHash = [NSString stringWithFormat:@"%u",appHash];
-        NSLog(@"Bundle id: %@",appIdentifier);
-        NSLog(@"App hash: %@",strAppHash);
-        if(strAppHash == nil)
+        aSelector = NSSelectorFromString(PARAM_BUNDLE_EXECUTABLE);
+        NSString *bundleExecutable = [object performSelector:aSelector];
+        if(bundleExecutable == nil)
         {
-            strAppHash = @"NA";
+            bundleExecutable = @"NA";
         }
         
-        unsigned long long installType = [object performSelector:@selector(installType)];
+        aSelector = NSSelectorFromString(PARAM_ENTITLEMENTS);
+        NSDictionary *entitlements = [object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(PARAM_ENVIRONMENT_VARIABLES);
+        NSDictionary *environmentVariables = [object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(PARAM_BUNDLE_URL);
+        NSURL *bundleURL = [object performSelector:aSelector];
+        NSString *strBundleURL = nil;
+        if(bundleURL == nil)
+        {
+            strBundleURL = @"NA";
+        }
+        else
+        {
+            strBundleURL = [bundleURL absoluteString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_BUNDLE_CONTAINER_URL);
+        NSURL *bundleContainerURL = [object performSelector:aSelector];
+        NSString *strBundleContainerURL = nil;
+        if(bundleContainerURL == nil)
+        {
+            strBundleContainerURL = @"NA";
+        }
+        else
+        {
+            strBundleContainerURL = [bundleContainerURL absoluteString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_LOCALIZED_NAME);
+        NSString *localizedName=[object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(PARAM_LOCALIZED_SHORT_NAME);
+        NSString *localizedShortName=[object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(PARAM_APPLICATION_TYPE);
+        NSString *appType=[object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(PARAM_TEAM_ID);
+        NSString *teamID = [object performSelector:aSelector];
+        if(teamID == nil)
+        {
+            teamID = @"NA";
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_VENDOR_NAME);
+        NSString *vendorName = [object performSelector:aSelector];
+        if(vendorName == nil)
+        {
+            vendorName = @"NA";
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_SOURCE_APP_IDENTIFIER);
+        NSString *sourceAppIdentifier = [object performSelector:aSelector];
+        if(sourceAppIdentifier == nil)
+        {
+            sourceAppIdentifier = @"NA";
+        }
+        
+//        NSNumber *staticDiskUsage=[object performSelector:@selector(staticDiskUsage)];
+//        NSString *resourcesDirectoryURL=[object performSelector:@selector(resourcesDirectoryURL)];
+        
+        aSelector = NSSelectorFromString(PARAM_CONTAINER_URL);
+        NSURL *containerURL = [object performSelector:aSelector];
+        NSString *strContainerURL = nil;
+        if(containerURL == nil)
+        {
+            strContainerURL = @"NA";
+        }
+        else
+        {
+            strContainerURL = [containerURL absoluteString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_DATA_CONTAINER_URL);
+        NSURL *dataContainerURL = [object performSelector:aSelector];
+        NSString *strDataContainerURL = nil;
+        if(dataContainerURL == nil)
+        {
+            strDataContainerURL = @"NA";
+        }
+        else
+        {
+            strDataContainerURL = [dataContainerURL absoluteString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_APPSTORE_RECEIPT_URL);
+        NSURL *appStoreReceiptURL = [object performSelector:aSelector];
+        NSString *strAppStoreReceiptURL = nil;
+        if(appStoreReceiptURL == nil)
+        {
+            strAppStoreReceiptURL = @"NA";
+        }
+        else
+        {
+            strAppStoreReceiptURL = [appStoreReceiptURL absoluteString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_CACHE_GUID);
+        NSUUID *cacheGUID = [object performSelector:aSelector];
+        NSString *strCacheGUID = nil;
+        if(cacheGUID == nil)
+        {
+            strCacheGUID = @"NA";
+        }
+        else
+        {
+            strCacheGUID = [cacheGUID UUIDString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_UNIQUE_IDENTIFIER);
+        NSUUID *uniqueIdentifier = [object performSelector:aSelector];
+        NSString *strUniqueIdentifier = nil;
+        if(uniqueIdentifier == nil)
+        {
+            strUniqueIdentifier = @"NA";
+        }
+        else
+        {
+            strUniqueIdentifier = [uniqueIdentifier UUIDString];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_MACH_O_UUIDS);
+        NSArray *machOUUIDs = [object performSelector:aSelector];
+        
+        aSelector = NSSelectorFromString(PARAM_INSTALL_TYPE);
+        unsigned long long installType = [object performSelector:aSelector];
         NSString *strInstallType = [NSString stringWithFormat:@"%llu",installType];
         if(strInstallType == nil)
         {
             strInstallType = @"NA";
         }
         
-        unsigned long long originalInstallType = [object performSelector:@selector(originalInstallType)];
+        aSelector = NSSelectorFromString(PARAM_ORIGINAL_INSTALL_TYPE);
+        unsigned long long originalInstallType = [object performSelector:aSelector];
         NSString *strOriginalInstallType = [NSString stringWithFormat:@"%llu",originalInstallType];
         if(strOriginalInstallType == nil)
         {
             strOriginalInstallType = @"NA";
         }
         
-        BOOL isProfileValidated = [object performSelector:@selector(profileValidated)];
-        NSString *strIsProfileValidated = [NSString stringWithFormat:@"%@",isProfileValidated ? @"YES" : @"NO"];
-        
-        BOOL isInstalled = [object performSelector:@selector(isInstalled)];
-        NSString *strIsInstalled = [NSString stringWithFormat:@"%@",isInstalled ? @"YES" : @"NO"];
-        
-        BOOL isRestricted = [object performSelector:@selector(isRestricted)];
-        NSString *strIsRestricted = [NSString stringWithFormat:@"%@",isRestricted ? @"YES" : @"NO"];
-        
-        NSString *sourceAppIdentifier = [object performSelector:@selector(sourceAppIdentifier)];
-        if(sourceAppIdentifier == nil)
+        aSelector = NSSelectorFromString(PARAM_SEQUENCE_NUMBER);
+        unsigned int appSequenceNumber = [object performSelector:aSelector];
+        NSString *strAppSequenceNumber = [NSString stringWithFormat:@"%u",appSequenceNumber];
+        NSLog(@"Bundle id: %@",appIdentifier);
+        NSLog(@"App sequence number: %@",strAppSequenceNumber);
+        if(strAppSequenceNumber == nil)
         {
-            sourceAppIdentifier = @"NA";
+            strAppSequenceNumber = @"NA";
         }
         
-        NSString *storeCohortMetadata = [object performSelector:@selector(storeCohortMetadata)];
+        aSelector = NSSelectorFromString(PARAM_HASH);
+        unsigned int appHash = [object performSelector:aSelector];
+        NSString *strAppHash = [NSString stringWithFormat:@"%u",appHash];
+        if(strAppHash == nil)
+        {
+            strAppHash = @"NA";
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_FOUND_BACKING_BUNDLE);
+        BOOL foundBackingBundle = [object performSelector:aSelector];
+        NSString *strFoundBackingBundle = [NSString stringWithFormat:@"%@",foundBackingBundle ? @"YES" : @"NO"];
+        
+        aSelector = NSSelectorFromString(PARAM_PROFILE_VALIDATED);
+        BOOL isProfileValidated = [object performSelector:aSelector];
+        NSString *strIsProfileValidated = [NSString stringWithFormat:@"%@",isProfileValidated ? @"YES" : @"NO"];
+        
+        aSelector = NSSelectorFromString(PARAM_IS_INSTALLED);
+        BOOL isInstalled = [object performSelector:aSelector];
+        NSString *strIsInstalled = [NSString stringWithFormat:@"%@",isInstalled ? @"YES" : @"NO"];
+        
+        aSelector = NSSelectorFromString(PARAM_IS_RESTRICTED);
+        BOOL isRestricted = [object performSelector:aSelector];
+        NSString *strIsRestricted = [NSString stringWithFormat:@"%@",isRestricted ? @"YES" : @"NO"];
+        
+        aSelector = NSSelectorFromString(PARAM_STORE_COHORT_METADATA);
+        NSString *storeCohortMetadata = [object performSelector:aSelector];
         if(storeCohortMetadata == nil)
         {
             storeCohortMetadata = @"NA";
         }
         
-        NSArray *appTags = [object performSelector:@selector(appTags)];
+        aSelector = NSSelectorFromString(PARAM_APP_TAGS);
+        NSArray *appTags = [object performSelector:aSelector];
         if((appTags == nil) || (appTags.count == 0))
         {
             appTags = @[@"No tags"];
         }
+        
+        NSLog(@"Bundle ID: %@",appIdentifier);
+        NSLog(@"Short Version: %@",shortVersion);
+        NSLog(@"Bundle Version: %@",bundleVersion);
+        NSLog(@"Signer identity: %@",signerIdentity);
+        NSLog(@"Bundle Executable: %@",bundleExecutable);
+        NSLog(@"Entitlements: %@",entitlements);
+        NSLog(@"Environment Variables: %@",environmentVariables);
+        NSLog(@"Bundle URL: %@",strBundleURL);
+        NSLog(@"Bundle Container URL: %@",strBundleContainerURL);
+        
+        NSLog(@"App Short Name: %@",localizedShortName);
+        NSLog(@"App Name: %@",localizedName);
+        NSLog(@"App Type: %@",appType);
+        NSLog(@"Team ID: %@",teamID);
+        NSLog(@"Vendor Name: %@",vendorName);
+        NSLog(@"Source App Identifier: %@",sourceAppIdentifier);
+        
+        NSLog(@"Container URL: %@",strContainerURL);
+        NSLog(@"Data Container URL: %@",strDataContainerURL);
+        
+        NSLog(@"AppStore Receipt URL: %@",strAppStoreReceiptURL);
+
+        NSLog(@"Cache GUID: %@",strCacheGUID);
+        NSLog(@"Unique Identifier: %@",strUniqueIdentifier);
+        NSLog(@"Mach O UUIDs: %@",machOUUIDs);
+        
+        NSLog(@"Install Type: %@",strInstallType);
+        NSLog(@"Original Install Type: %@",strOriginalInstallType);
+        NSLog(@"Sequence Number: %@",strAppSequenceNumber);
+        NSLog(@"App hash: %@",strAppHash);
+        
+        NSLog(@"Found backing bundle: %@",strFoundBackingBundle);
+        
+        NSLog(@"Profile Validate: %@",strIsProfileValidated);
+        NSLog(@"Is Installed: %@",strIsInstalled);
+        NSLog(@"Is Restricted: %@",strIsRestricted);
+        
+        NSLog(@"Store Cohort Metadata: %@",storeCohortMetadata);
+        NSLog(@"App tags: %@",appTags);
+        
         
         if ([appType isEqualToString:@"User"])
         {
@@ -272,16 +482,49 @@ NSMutableArray* browseInstalledAppListForIos7()
                     strIconImage = @"";
                 }
             }
-            Application *application = [[Application alloc] initWithBundleID:appIdentifier name:localizedName version:bundleVersion];
+            
+//            Application *application = [[Application alloc] initWithBundleID:appIdentifier name:localizedName version:bundleVersion];
+            Application *application = [[Application alloc] init];
+            application.bundleID = appIdentifier;
             application.bundleShortVersion = shortVersion;
-            application.iconImage = strIconImage;
+            application.bundleVersion = bundleVersion;
+            application.signerIdentity = signerIdentity;
+            application.bundleExecutable = bundleExecutable;
+            application.entitlements = entitlements;
+            application.environmentVariables = environmentVariables;
+            application.bundleURL = strBundleURL;
+            application.bundleContainerURL = strBundleContainerURL;
+            
+            application.name = localizedName;
+            application.shortName = localizedShortName;
+            application.type = appType;
             application.teamID = teamID;
             application.vendorName = vendorName;
-            application.signerIdentity = signerIdentity;
             application.sourceAppIdentifier = sourceAppIdentifier;
-            application.profileValidated = isProfileValidated;
+            application.iconImage = strIconImage;
+            
+            application.containerURL = strContainerURL;
+            application.dataContainerURL = strDataContainerURL;
+            
+            application.appStoreReceiptURL = strAppStoreReceiptURL;
+            
+            application.cacheGUID = cacheGUID;
+            application.uniqueIdentifier = uniqueIdentifier;
+            application.machOUUIDs = machOUUIDs;
+            
             application.installType = installType;
             application.originalInstallType = originalInstallType;
+            application.sequenceNumber = appSequenceNumber;
+            application.appHash = appHash;
+            
+            application.foundBackingBundle = foundBackingBundle;
+            
+            application.profileValidated = isProfileValidated;
+            application.isInstalled = isInstalled;
+            application.isRestricted = isRestricted;
+            
+            application.storeCohortMetadata = storeCohortMetadata;
+            application.tags = appTags;
             
             NSDictionary* appDictionary = @{
                                             @"bundleid" : appIdentifier,

@@ -13,9 +13,9 @@
 		0726E4A81C590073008BD1E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0726E4A61C590073008BD1E9 /* Main.storyboard */; };
 		0726E4AA1C590073008BD1E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0726E4A91C590073008BD1E9 /* Assets.xcassets */; };
 		0726E4AD1C590073008BD1E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0726E4AB1C590073008BD1E9 /* LaunchScreen.storyboard */; };
-		0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */; settings = {ASSET_TAGS = (); }; };
-		079271121C5B440F0084E6BD /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 079271111C5B440F0084E6BD /* Application.m */; settings = {ASSET_TAGS = (); }; };
-		07FD9F831C5B83F200FDFB5D /* ApplicationDetailsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FD9F821C5B83F200FDFB5D /* ApplicationDetailsVC.m */; settings = {ASSET_TAGS = (); }; };
+		0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */; };
+		079271121C5B440F0084E6BD /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 079271111C5B440F0084E6BD /* Application.m */; };
+		07FD9F831C5B83F200FDFB5D /* ApplicationDetailsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FD9F821C5B83F200FDFB5D /* ApplicationDetailsVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +92,7 @@
 		0726E4B41C590124008BD1E9 /* AppList */ = {
 			isa = PBXGroup;
 			children = (
+				07F984831C6200D00030D7DC /* View */,
 				07FD9F801C5B83D000FDFB5D /* Controller */,
 				0792710F1C5B43F10084E6BD /* Model */,
 				0726E4B51C590138008BD1E9 /* BrowseAllInstalledApplication.h */,
@@ -107,6 +108,13 @@
 				079271111C5B440F0084E6BD /* Application.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		07F984831C6200D00030D7DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		07FD9F801C5B83D000FDFB5D /* Controller */ = {
