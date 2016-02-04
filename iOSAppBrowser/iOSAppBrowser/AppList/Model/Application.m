@@ -31,12 +31,14 @@
         _teamID = @"";
         _vendorName = @"";
         _sourceAppIdentifier = @"";
+        _registeredDate = nil;
         _iconImage = nil;
         
         _containerURL = @"";
         _dataContainerURL = @"";
       
         _appStoreReceiptURL = @"";
+        _storeFront = nil;
         
         _cacheGUID = nil;
         _uniqueIdentifier = nil;
@@ -49,12 +51,14 @@
         
         _foundBackingBundle = YES;
         
+        _isAdHocCodeSigned = NO;
         _profileValidated = NO;
         _isInstalled = YES;
         _isRestricted = NO;
         
         _storeCohortMetadata = @"";
         _tags = nil;
+        _companionAppIdentifier = @"";
     }
     
     return self;
@@ -123,6 +127,10 @@
     {
         value = self.sourceAppIdentifier;
     }
+    else if([key isEqualToString:APP_REGISTERED_DATE])
+    {
+        value = self.registeredDate;
+    }
     else if([key isEqualToString:APP_CONTAINER_URL])
     {
         value = self.containerURL;
@@ -134,6 +142,10 @@
     else if([key isEqualToString:APP_STORE_RECEIPT_URL])
     {
         value = self.appStoreReceiptURL;
+    }
+    else if([key isEqualToString:APP_STORE_FRONT])
+    {
+        value = self.storeFront;
     }
     else if([key isEqualToString:APP_CACHE_GUID])
     {
@@ -172,6 +184,11 @@
         NSNumber *numFoundBackingBundle = [NSNumber numberWithBool:self.foundBackingBundle];
         value = numFoundBackingBundle;
     }
+    if([key isEqualToString:APP_IS_ADHOC_CODE_SIGNED])
+    {
+        NSNumber *numIsAdHocCodeSigned = [NSNumber numberWithBool:self.isAdHocCodeSigned];
+        value = numIsAdHocCodeSigned;
+    }
     if([key isEqualToString:APP_PROFILE_VALIDATED])
     {
         NSNumber *numIsProfileValidated = [NSNumber numberWithBool:self.profileValidated];
@@ -194,6 +211,10 @@
     else if([key isEqualToString:APP_TAGS])
     {
         value = self.tags;
+    }
+    if([key isEqualToString:APP_COMPANION_APP_IDENTIFIER])
+    {
+        value = self.companionAppIdentifier;
     }
     return value;
 }
