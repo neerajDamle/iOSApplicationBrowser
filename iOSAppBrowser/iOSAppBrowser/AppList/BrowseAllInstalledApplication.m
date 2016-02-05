@@ -612,122 +612,100 @@ NSMutableArray* browseInstalledAppListForIos7()
 //        NSLog(@"App tags: %@",appTags);
 //        NSLog(@"Companion App Identifier: %@",companionApplicationIdentifier);
         
-        if ([appType isEqualToString:@"User"])
+        NSString *appName;
+        if(localizedName == nil)
         {
-            NSString *appName;
-            if(localizedName == nil)
+            if(localizedShortName == nil)
             {
-                if(localizedShortName == nil)
-                {
-                    appName = @"Unknown";
-                }
-                else
-                {
-                    appName = localizedName;
-                }
+                appName = @"Unknown";
             }
             else
             {
                 appName = localizedName;
             }
-            
-            if(bundleVersion == nil)
-            {
-                bundleVersion = @"1.0";
-            }
-            if(shortVersion == nil)
-            {
-                shortVersion = @"1.0";
-            }
-           
-            UIImage *iconImage = [self appIconImageForBundleIdentifier:appIdentifier];
-            NSString *strIconImage = nil;
-            if(iconImage)
-            {
-                NSData *imageData = UIImagePNGRepresentation(iconImage);
-                if(imageData)
-                {
-                    strIconImage = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-                }
-                else
-                {
-                    strIconImage = @"";
-                }
-            }
-            
-//            Application *application = [[Application alloc] initWithBundleID:appIdentifier name:localizedName version:bundleVersion];
-            Application *application = [[Application alloc] init];
-            application.bundleID = appIdentifier;
-            application.bundleShortVersion = shortVersion;
-            application.bundleVersion = bundleVersion;
-            application.signerIdentity = signerIdentity;
-            application.bundleExecutable = bundleExecutable;
-            application.entitlements = entitlements;
-            application.environmentVariables = environmentVariables;
-            application.bundleURL = strBundleURL;
-            application.bundleContainerURL = strBundleContainerURL;
-            
-            application.name = localizedName;
-            application.shortName = localizedShortName;
-            application.type = appType;
-            application.teamID = teamID;
-            application.vendorName = vendorName;
-            application.sourceAppIdentifier = sourceAppIdentifier;
-            application.registeredDate = registeredDate;
-            application.iconImage = strIconImage;
-            
-            application.containerURL = strContainerURL;
-            application.dataContainerURL = strDataContainerURL;
-            
-            application.appStoreReceiptURL = strAppStoreReceiptURL;
-            application.storeFront = storeFront;
-            
-            application.cacheGUID = cacheGUID;
-            application.uniqueIdentifier = uniqueIdentifier;
-            application.machOUUIDs = machOUUIDs;
-            
-            application.installType = installType;
-            application.originalInstallType = originalInstallType;
-            application.sequenceNumber = appSequenceNumber;
-            application.appHash = appHash;
-            
-            application.foundBackingBundle = foundBackingBundle;
-            
-            application.isAdHocCodeSigned = isAdHocCodeSigned;
-            application.profileValidated = isProfileValidated;
-            application.isInstalled = isInstalled;
-            application.isRestricted = isRestricted;
-            
-            application.storeCohortMetadata = storeCohortMetadata;
-            application.tags = appTags;
-            application.companionAppIdentifier = companionApplicationIdentifier;
-            
-            NSDictionary* appDictionary = @{
-                                            @"bundleid" : appIdentifier,
-                                            @"bundleShortVersion" : shortVersion,
-                                            @"bundleVersion" : bundleVersion,
-                                            @"appName" : localizedName,
-                                            @"teamID" : teamID,
-                                            @"vendorName" : vendorName,
-                                            @"signerIdentity": signerIdentity,
-                                            @"installType" : strInstallType,
-                                            @"originalInstallType" : strOriginalInstallType,
-                                            @"profileValidated" : strIsProfileValidated,
-                                            @"isInstalled" : strIsInstalled,
-                                            @"isRestricted" : strIsRestricted,
-                                            @"sourceAppIdentifier" : sourceAppIdentifier,
-                                            @"storeCohortMetadata" : storeCohortMetadata,
-                                            @"appTags" : appTags
-                                            };
-            
-//            [appList addObject:appDictionary];
-            [appList addObject:application];
         }
+        else
+        {
+            appName = localizedName;
+        }
+        
+        if(bundleVersion == nil)
+        {
+            bundleVersion = @"1.0";
+        }
+        if(shortVersion == nil)
+        {
+            shortVersion = @"1.0";
+        }
+        
+        UIImage *iconImage = [self appIconImageForBundleIdentifier:appIdentifier];
+        NSString *strIconImage = nil;
+        if(iconImage)
+        {
+            NSData *imageData = UIImagePNGRepresentation(iconImage);
+            if(imageData)
+            {
+                strIconImage = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+            }
+            else
+            {
+                strIconImage = @"";
+            }
+        }
+        
+//        Application *application = [[Application alloc] initWithBundleID:appIdentifier name:localizedName version:bundleVersion];
+        Application *application = [[Application alloc] init];
+        application.bundleID = appIdentifier;
+        application.bundleShortVersion = shortVersion;
+        application.bundleVersion = bundleVersion;
+        application.signerIdentity = signerIdentity;
+        application.bundleExecutable = bundleExecutable;
+        application.entitlements = entitlements;
+        application.environmentVariables = environmentVariables;
+        application.bundleURL = strBundleURL;
+        application.bundleContainerURL = strBundleContainerURL;
+        
+        application.name = localizedName;
+        application.shortName = localizedShortName;
+        application.type = appType;
+        application.teamID = teamID;
+        application.vendorName = vendorName;
+        application.sourceAppIdentifier = sourceAppIdentifier;
+        application.registeredDate = registeredDate;
+        application.iconImage = strIconImage;
+        
+        application.containerURL = strContainerURL;
+        application.dataContainerURL = strDataContainerURL;
+        
+        application.appStoreReceiptURL = strAppStoreReceiptURL;
+        application.storeFront = storeFront;
+        
+        application.cacheGUID = cacheGUID;
+        application.uniqueIdentifier = uniqueIdentifier;
+        application.machOUUIDs = machOUUIDs;
+        
+        application.installType = installType;
+        application.originalInstallType = originalInstallType;
+        application.sequenceNumber = appSequenceNumber;
+        application.appHash = appHash;
+        
+        application.foundBackingBundle = foundBackingBundle;
+        
+        application.isAdHocCodeSigned = isAdHocCodeSigned;
+        application.profileValidated = isProfileValidated;
+        application.isInstalled = isInstalled;
+        application.isRestricted = isRestricted;
+        
+        application.storeCohortMetadata = storeCohortMetadata;
+        application.tags = appTags;
+        application.companionAppIdentifier = companionApplicationIdentifier;
+
+        [appList addObject:application];
     }
     return appList;
 }
 
-#pragma mark- 
+#pragma mark-
 #pragma mark- get all installed app
 + (NSMutableArray *)browseInstalledAppList{
     

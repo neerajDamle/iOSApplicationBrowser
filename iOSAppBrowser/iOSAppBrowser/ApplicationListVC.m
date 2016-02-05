@@ -11,13 +11,18 @@
 #import "Application.h"
 #import "ApplicationDetailsVC.h"
 
+static NSString *APP_CATEGORY_USER = @"User";
+static NSString *APP_CATEGORY_SYSTEM = @"System";
+
 @interface ApplicationListVC () <UITableViewDataSource,UITableViewDelegate>
 {
     NSArray *applications;
+    NSMutableArray *visibleApplications;
     NSInteger selectedRow;
 }
+@property (strong, nonatomic) IBOutlet UISegmentedControl *appTypeSegmentControl;
 @property (strong, nonatomic) IBOutlet UITableView *appListTableView;
-
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @end
 
 @implementation ApplicationListVC
@@ -27,12 +32,20 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.title = @"Applications";
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:self.navigationItem.backBarButtonItem.style target:nil action:nil];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor lightGrayColor];
+    self.refreshControl.tintColor = [UIColor whiteColor];
+    [self.refreshControl addTarget:self action:@selector(refreshAppList) forControlEvents:UIControlEventValueChanged];
+    [self.appListTableView addSubview:self.refreshControl];
     
 //    [BrowseAllInstalledApplication getDeviceDetails];
 //    [BrowseAllInstalledApplication getAccountDetails];
 //    [BrowseAllInstalledApplication getNetworkDetails];
     
     applications = [BrowseAllInstalledApplication browseInstalledAppList];
+    [self loadApplicationsForCategory:APP_CATEGORY_USER];
     selectedRow = -1;
     
 //    NSString *bundleID = @"com.bigcavegames.blockybird3d";
@@ -45,17 +58,94 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Refresh application list
+- (void)refreshAppList
+{
+    applications = [BrowseAllInstalledApplication browseInstalledAppList];
+    [self loadApplicationsForCategory:APP_CATEGORY_USER];
+    selectedRow = -1;
+    
+    [self.appListTableView reloadData];
+    
+    // End the refreshing
+    if (self.refreshControl)
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM d, h:mm a"];
+        NSString *title = [NSString stringWithFormat:@"Last update: %@", [formatter stringFromDate:[NSDate date]]];
+        NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:[UIColor whiteColor]
+                                                                    forKey:NSForegroundColorAttributeName];
+        NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
+        self.refreshControl.attributedTitle = attributedTitle;
+        
+        [self.refreshControl endRefreshing];
+    }
+}
+
+#pragma mark - Update application list based on category
+- (void)loadApplicationsForCategory:(NSString *)applicationCategory
+{
+    if(visibleApplications == nil)
+    {
+        visibleApplications = [[NSMutableArray alloc] init];
+    }
+    else
+    {
+        [visibleApplications removeAllObjects];
+    }
+    
+    for (Application *currentApplication in applications)
+    {
+        if([currentApplication.type isEqualToString:applicationCategory])
+        {
+            [visibleApplications addObject:currentApplication];
+        }
+    }
+    
+    [self.appListTableView reloadData];
+}
+
+#pragma mark - Segment Control click event
+/**
+ * Updated tableview with applications of selected type
+ * @author Neeraj Damle
+ *
+ * @param
+ * @return
+ */
+- (IBAction)changeApplicationType:(id)sender
+{
+    switch (((UISegmentedControl *) sender).selectedSegmentIndex)
+    {
+        case 0: //User
+        {
+            [self loadApplicationsForCategory:APP_CATEGORY_USER];
+            break;
+        }
+        case 1: //System
+        {
+            [self loadApplicationsForCategory:APP_CATEGORY_SYSTEM];
+            break;
+        }
+        default:  //User
+        {
+            [self loadApplicationsForCategory:APP_CATEGORY_USER];
+            break;
+        }
+    }
+}
+
 #pragma mark - UITableView DataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return applications.count;
+    return visibleApplications.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AppListCell"];
     
-    Application *application = [applications objectAtIndex:indexPath.row];
+    Application *application = [visibleApplications objectAtIndex:indexPath.row];
     cell.textLabel.text = application.name;
     
     NSString *strIconImage = application.iconImage;
@@ -84,7 +174,7 @@
 {
     if([segue.identifier isEqualToString:@"applicationDetailsSegue"])
     {
-        Application *application = [applications objectAtIndex:selectedRow];
+        Application *application = [visibleApplications objectAtIndex:selectedRow];
         
         ApplicationDetailsVC *applicationDetailsVC = (ApplicationDetailsVC *)segue.destinationViewController;
         applicationDetailsVC.application = application;
