@@ -10,6 +10,7 @@
 #import "BrowseAllInstalledApplication.h"
 #import "Application.h"
 #import "ApplicationDetailsVC.h"
+#import "RiskyAppsVC.h"
 
 static NSString *APP_CATEGORY_USER = @"User";
 static NSString *APP_CATEGORY_SYSTEM = @"System";
@@ -48,6 +49,8 @@ static NSString *APP_CATEGORY_SYSTEM = @"System";
     [self loadApplicationsForCategory:APP_CATEGORY_USER];
     selectedRow = -1;
     
+    [self addWarningButton];
+    
 //    NSString *bundleID = @"com.bigcavegames.blockybird3d";
 //    [BrowseAllInstalledApplication openApplicationWithBundleID:bundleID];
 //    [BrowseAllInstalledApplication getBundleDetails:bundleID];
@@ -56,6 +59,19 @@ static NSString *APP_CATEGORY_SYSTEM = @"System";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)addWarningButton
+{
+    UIImage* warningImage = [UIImage imageNamed:@"Warning"];
+    CGRect frameImg = CGRectMake(0, 0, warningImage.size.width, warningImage.size.height);
+    UIButton *someButton = [[UIButton alloc] initWithFrame:frameImg];
+    [someButton setBackgroundImage:warningImage forState:UIControlStateNormal];
+    [someButton addTarget:self action:@selector(showRiskyApps) forControlEvents:UIControlEventTouchUpInside];
+    [someButton setShowsTouchWhenHighlighted:YES];
+    
+    UIBarButtonItem *warningButton =[[UIBarButtonItem alloc] initWithCustomView:someButton];
+    self.navigationItem.rightBarButtonItem = warningButton;
 }
 
 #pragma mark - Refresh application list
@@ -132,6 +148,19 @@ static NSString *APP_CATEGORY_SYSTEM = @"System";
             [self loadApplicationsForCategory:APP_CATEGORY_USER];
             break;
         }
+    }
+}
+
+#pragma mark - Warning button click event
+- (void)showRiskyApps
+{
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    if(storyBoard)
+    {
+        RiskyAppsVC *riskyAppsVC = [storyBoard instantiateViewControllerWithIdentifier:@"RiskyAppsVC"];
+        riskyAppsVC.applications = applications;
+        
+        [self.navigationController pushViewController:riskyAppsVC animated:YES];
     }
 }
 
