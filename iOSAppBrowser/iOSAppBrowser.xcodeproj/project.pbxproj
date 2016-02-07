@@ -16,6 +16,7 @@
 		0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */; };
 		079271121C5B440F0084E6BD /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 079271111C5B440F0084E6BD /* Application.m */; };
 		07FD9F831C5B83F200FDFB5D /* ApplicationDetailsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FD9F821C5B83F200FDFB5D /* ApplicationDetailsVC.m */; };
+		E0E0CC1B1C67C40500FB4457 /* RiskyAppsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E0CC1A1C67C40500FB4457 /* RiskyAppsVC.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,8 @@
 		079271111C5B440F0084E6BD /* Application.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		07FD9F811C5B83F200FDFB5D /* ApplicationDetailsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationDetailsVC.h; sourceTree = "<group>"; };
 		07FD9F821C5B83F200FDFB5D /* ApplicationDetailsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationDetailsVC.m; sourceTree = "<group>"; };
+		E0E0CC191C67C40500FB4457 /* RiskyAppsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiskyAppsVC.h; sourceTree = "<group>"; };
+		E0E0CC1A1C67C40500FB4457 /* RiskyAppsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiskyAppsVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +125,8 @@
 			children = (
 				07FD9F811C5B83F200FDFB5D /* ApplicationDetailsVC.h */,
 				07FD9F821C5B83F200FDFB5D /* ApplicationDetailsVC.m */,
+				E0E0CC191C67C40500FB4457 /* RiskyAppsVC.h */,
+				E0E0CC1A1C67C40500FB4457 /* RiskyAppsVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 				07FD9F831C5B83F200FDFB5D /* ApplicationDetailsVC.m in Sources */,
 				0726E4A51C590073008BD1E9 /* ApplicationListVC.m in Sources */,
 				0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */,
+				E0E0CC1B1C67C40500FB4457 /* RiskyAppsVC.m in Sources */,
 				0726E4A21C590073008BD1E9 /* AppDelegate.m in Sources */,
 				079271121C5B440F0084E6BD /* Application.m in Sources */,
 				0726E49F1C590073008BD1E9 /* main.m in Sources */,
