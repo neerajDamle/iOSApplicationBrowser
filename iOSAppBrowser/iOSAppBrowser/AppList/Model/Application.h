@@ -24,6 +24,7 @@ static NSString *APP_TYPE = @"Type";
 static NSString *APP_TEAM_ID = @"Team ID";
 static NSString *APP_VENDOR_NAME = @"Vendor Name";
 static NSString *APP_SOURCE_IDENTIFIER = @"Source Identifier";
+static NSString *APP_STORE_NAME = @"Store Name";
 static NSString *APP_REGISTERED_DATE = @"Registered Date";
 
 static NSString *APP_CONTAINER_URL = @"Container URL";
@@ -31,6 +32,8 @@ static NSString *APP_DATA_CONTAINER_URL = @"Data Container URL";
 
 static NSString *APP_STORE_RECEIPT_URL = @"AppStore Receipt URL";
 static NSString *APP_STORE_FRONT = @"Store Front";
+static NSString *APP_PURCHASER_DSID = @"Purchaser DSID";
+static NSString *APP_APPLICATION_DSID = @"Application DSID";
 
 static NSString *APP_CACHE_GUID = @"Cache GUID";
 static NSString *APP_UNIQUE_IDENTIFIER = @"Unique Identifier";
@@ -70,6 +73,7 @@ static NSString *APP_COMPANION_APP_IDENTIFIER = @"Companion Application Identifi
 @property (nonatomic,readwrite) NSString *teamID;
 @property (nonatomic,readwrite) NSString *vendorName;
 @property (nonatomic,readwrite) NSString *sourceAppIdentifier;
+@property (nonatomic,readwrite) NSString *storeName;
 @property (nonatomic,readwrite) NSDate *registeredDate;
 @property (nonatomic, readwrite) NSString *iconImage;
 
@@ -78,6 +82,8 @@ static NSString *APP_COMPANION_APP_IDENTIFIER = @"Companion Application Identifi
 
 @property (nonatomic,readwrite) NSString *appStoreReceiptURL;
 @property (nonatomic,readwrite) NSNumber *storeFront;
+@property (nonatomic,readwrite) NSNumber *purchaserDSID;
+@property (nonatomic,readwrite) NSString *applicationDSID;
 
 @property (nonatomic,readwrite) NSUUID *cacheGUID;
 @property (nonatomic,readwrite) NSUUID *uniqueIdentifier;

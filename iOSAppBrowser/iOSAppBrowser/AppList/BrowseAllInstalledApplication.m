@@ -67,6 +67,8 @@ static NSString *PARAM_DATA_CONTAINER_URL = @"dataContainerURL";
 
 static NSString *PARAM_APPSTORE_RECEIPT_URL = @"appStoreReceiptURL";
 static NSString *PARAM_STORE_FRONT = @"storeFront";
+static NSString *PARAM_PURCHASER_DSID = @"purchaserDSID";
+static NSString *PARAM_APPLICATION_DSID = @"applicationDSID";
 
 static NSString *PARAM_CACHE_GUID = @"cacheGUID";
 static NSString *PARAM_UNIQUE_IDENTIFIER = @"uniqueIdentifier";
@@ -283,6 +285,17 @@ NSMutableArray* browseInstalledAppListForIos7()
             }
         }
         
+        aSelector = NSSelectorFromString(@"itemName");
+        NSString *itemName = @"NA";
+        if([object respondsToSelector:aSelector])
+        {
+            itemName = [object performSelector:aSelector];
+            if(itemName == nil)
+            {
+                itemName = @"NA";
+            }
+        }
+        
         aSelector = NSSelectorFromString(PARAM_LOCALIZED_NAME);
         NSString *localizedName = @"NA";
         if([object respondsToSelector:aSelector])
@@ -313,6 +326,17 @@ NSMutableArray* browseInstalledAppListForIos7()
             if(appType == nil)
             {
                 appType = @"NA";
+            }
+        }
+        
+        aSelector = NSSelectorFromString(@"applicationVariant");
+        NSString *applicationVariant = @"NA";
+        if([object respondsToSelector:aSelector])
+        {
+            applicationVariant = [object performSelector:aSelector];
+            if(applicationVariant == nil)
+            {
+                applicationVariant = @"NA";
             }
         }
         
@@ -390,6 +414,31 @@ NSMutableArray* browseInstalledAppListForIos7()
             storeFront = [object performSelector:aSelector];
         }
         
+        aSelector = NSSelectorFromString(PARAM_PURCHASER_DSID);
+        NSNumber *purchaserDSID = nil;
+        if([object respondsToSelector:aSelector])
+        {
+            purchaserDSID = [object performSelector:aSelector];
+        }
+        
+        aSelector = NSSelectorFromString(@"downloaderDSID");
+        NSNumber *downloaderDSID = nil;
+        if([object respondsToSelector:aSelector])
+        {
+            downloaderDSID = [object performSelector:aSelector];
+        }
+        
+        aSelector = NSSelectorFromString(PARAM_APPLICATION_DSID);
+        NSString *applicationDSID = @"NA";
+        if([object respondsToSelector:aSelector])
+        {
+            applicationDSID = [object performSelector:aSelector];
+            if(applicationDSID == nil)
+            {
+                applicationDSID = @"NA";
+            }
+        }
+        
         aSelector = NSSelectorFromString(PARAM_APPSTORE_RECEIPT_URL);
         NSURL *appStoreReceiptURL = nil;
         NSString *strAppStoreReceiptURL = @"NA";
@@ -423,6 +472,10 @@ NSMutableArray* browseInstalledAppListForIos7()
             if(uniqueIdentifier)
             {
                 strUniqueIdentifier = [uniqueIdentifier UUIDString];
+                if(strUniqueIdentifier == nil)
+                {
+                    strUniqueIdentifier = @"NA";
+                }
             }
         }
         
@@ -434,6 +487,28 @@ NSMutableArray* browseInstalledAppListForIos7()
             if(machOUUIDs == nil)
             {
                 machOUUIDs = @[@"No machO UUIDs"];
+            }
+        }
+        
+        unsigned long long bundleFlags = 0;
+        NSString *strBundleFlags = @"NA";
+        if((bundleFlags = [object valueForKey:@"_bundleFlags"]))
+        {
+            strBundleFlags = [NSString stringWithFormat:@"%llu",bundleFlags];
+            if(strBundleFlags == nil)
+            {
+                strBundleFlags = @"NA";
+            }
+        }
+        
+        unsigned long long plistContentFlags = 0;
+        NSString *strPlistContentFlags = @"NA";
+        if((plistContentFlags = [object valueForKey:@"_plistContentFlags"]))
+        {
+            strPlistContentFlags = [NSString stringWithFormat:@"%llu",plistContentFlags];
+            if(strPlistContentFlags == nil)
+            {
+                strPlistContentFlags = @"NA";
             }
         }
         
@@ -577,10 +652,12 @@ NSMutableArray* browseInstalledAppListForIos7()
 //        NSLog(@"Environment Variables: %@",environmentVariables);
 //        NSLog(@"Bundle URL: %@",strBundleURL);
 //        NSLog(@"Bundle Container URL: %@",strBundleContainerURL);
-//        
+//
+//        NSLog(@"Item Name: %@",itemName);
 //        NSLog(@"App Short Name: %@",localizedShortName);
 //        NSLog(@"App Name: %@",localizedName);
 //        NSLog(@"App Type: %@",appType);
+//        NSLog(@"App Variant: %@",applicationVariant);
 //        NSLog(@"Team ID: %@",teamID);
 //        NSLog(@"Vendor Name: %@",vendorName);
 //        NSLog(@"Source App Identifier: %@",sourceAppIdentifier);
@@ -590,12 +667,17 @@ NSMutableArray* browseInstalledAppListForIos7()
 //        NSLog(@"Data Container URL: %@",strDataContainerURL);
 //        
 //        NSLog(@"AppStore Receipt URL: %@",strAppStoreReceiptURL);
-//        NSLog(@"Store front: %@",storeFront);
+//        NSLog(@"PurchaserDSID: %@",purchaserDSID);
+//        NSLog(@"DownloaderDSID: %@",downloaderDSID);
+//        NSLog(@"ApplicationDSID: %@",applicationDSID);
+        NSLog(@"Store front: %@",storeFront);
 //
 //        NSLog(@"Cache GUID: %@",strCacheGUID);
 //        NSLog(@"Unique Identifier: %@",strUniqueIdentifier);
 //        NSLog(@"Mach O UUIDs: %@",machOUUIDs);
 //
+//        NSLog(@"Bundle flags: %@",strBundleFlags);
+//        NSLog(@"Plist content flags: %@",strPlistContentFlags);
 //        NSLog(@"Install Type: %@",strInstallType);
 //        NSLog(@"Original Install Type: %@",strOriginalInstallType);
 //        NSLog(@"Sequence Number: %@",strAppSequenceNumber);
@@ -679,6 +761,8 @@ NSMutableArray* browseInstalledAppListForIos7()
         
         application.appStoreReceiptURL = strAppStoreReceiptURL;
         application.storeFront = storeFront;
+        application.purchaserDSID = purchaserDSID;
+        application.applicationDSID = applicationDSID;
         
         application.cacheGUID = cacheGUID;
         application.uniqueIdentifier = uniqueIdentifier;

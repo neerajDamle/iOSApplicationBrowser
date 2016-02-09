@@ -10,11 +10,85 @@
 
 @implementation Application
 
+static NSDictionary *storeFrontMapping = nil;
+
++ (void)initStoreMapping
+{
+    if(storeFrontMapping == nil)
+    {
+        storeFrontMapping = @{
+                                @"143441": @"USA",
+                                @"143465" : @"China",
+                                @"143467" : @"India"
+                              };
+    }
+}
+
+- (Application *)init
+{
+    self = [super init];
+    if(self)
+    {
+        [[self class] initStoreMapping];
+        
+        _bundleID = @"";
+        _bundleShortVersion = @"";
+        _bundleVersion = @"";
+        _signerIdentity = @"";
+        _bundleExecutable = @"";
+        _entitlements = nil;
+        _environmentVariables = nil;
+        _bundleURL = @"";
+        _bundleContainerURL = @"";
+        
+        _name = @"";
+        _shortName = @"";
+        _type = @"";
+        _teamID = @"";
+        _vendorName = @"";
+        _sourceAppIdentifier = @"";
+        _storeName = @"Unknown";
+        _registeredDate = nil;
+        _iconImage = nil;
+        
+        _containerURL = @"";
+        _dataContainerURL = @"";
+        
+        _appStoreReceiptURL = @"";
+        _storeFront = nil;
+        _purchaserDSID = nil;
+        
+        _cacheGUID = nil;
+        _uniqueIdentifier = nil;
+        _machOUUIDs = nil;
+        
+        _installType = 0;
+        _originalInstallType = 0;
+        _sequenceNumber = 0;
+        _appHash = 0;
+        
+        _foundBackingBundle = YES;
+        
+        _isAdHocCodeSigned = NO;
+        _profileValidated = NO;
+        _isInstalled = YES;
+        _isRestricted = NO;
+        
+        _storeCohortMetadata = @"";
+        _tags = nil;
+        _companionAppIdentifier = @"";
+    }
+    
+    return  self;
+}
+
 - (Application *)initWithBundleID:(NSString *)bundleID name:(NSString *)name version:(NSString *)version
 {
     self = [super init];
     if(self)
     {
+        [[self class] initStoreMapping];
+        
         _bundleID = bundleID;
         _bundleShortVersion = @"";
         _bundleVersion = version;
@@ -31,6 +105,7 @@
         _teamID = @"";
         _vendorName = @"";
         _sourceAppIdentifier = @"";
+        _storeName = @"Unknown";
         _registeredDate = nil;
         _iconImage = nil;
         
@@ -39,6 +114,7 @@
       
         _appStoreReceiptURL = @"";
         _storeFront = nil;
+        _purchaserDSID = nil;
         
         _cacheGUID = nil;
         _uniqueIdentifier = nil;
@@ -62,6 +138,22 @@
     }
     
     return self;
+}
+
+//Override setter for store front
+- (void)setStoreFront:(NSNumber *)storeFront
+{
+    _storeFront = storeFront;
+    
+    NSString *strStoreFront = [storeFront stringValue];
+    if(strStoreFront)
+    {
+        _storeName = [storeFrontMapping valueForKey:strStoreFront];
+        if(_storeName == nil)
+        {
+            _storeName = @"Unknown";
+        }
+    }
 }
 
 - (id)getValueForKey:(NSString *)key
@@ -127,6 +219,10 @@
     {
         value = self.sourceAppIdentifier;
     }
+    else if([key isEqualToString:APP_STORE_NAME])
+    {
+        value = self.storeName;
+    }
     else if([key isEqualToString:APP_REGISTERED_DATE])
     {
         value = self.registeredDate;
@@ -146,6 +242,14 @@
     else if([key isEqualToString:APP_STORE_FRONT])
     {
         value = self.storeFront;
+    }
+    else if([key isEqualToString:APP_PURCHASER_DSID])
+    {
+        value = self.purchaserDSID;
+    }
+    else if([key isEqualToString:APP_APPLICATION_DSID])
+    {
+        value = self.applicationDSID;
     }
     else if([key isEqualToString:APP_CACHE_GUID])
     {
