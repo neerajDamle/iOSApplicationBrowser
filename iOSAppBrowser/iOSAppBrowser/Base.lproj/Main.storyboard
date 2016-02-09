@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="h2y-qQ-60X">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="h2y-qQ-60X">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--Application ListVC-->
@@ -95,14 +95,14 @@
                                                     <rect key="frame" x="15" y="6" width="30" height="19"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WET-0s-i88">
                                                     <rect key="frame" x="15" y="25" width="28" height="13"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -159,10 +159,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Eau-dv-2bO">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="63" width="600" height="537"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AppListCell" id="CPK-33-2kh">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RiskyAppListCell" id="CPK-33-2kh">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CPK-33-2kh" id="iOs-RU-SgE">
@@ -176,17 +176,32 @@
                                     <outlet property="delegate" destination="htI-hk-Xku" id="yRu-Ml-uHZ"/>
                                 </connections>
                             </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="E1G-NG-HSp">
+                                <rect key="frame" x="10" y="30" width="580" height="29"/>
+                                <segments>
+                                    <segment title="Apple"/>
+                                    <segment title="Distribution"/>
+                                    <segment title="Developer"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeApplicationBySignerType:" destination="htI-hk-Xku" eventType="valueChanged" id="BvX-LH-FmZ"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Eau-dv-2bO" firstAttribute="top" secondItem="rrh-Vd-W1Q" secondAttribute="bottom" id="58d-nw-bb0"/>
+                            <constraint firstAttribute="trailing" secondItem="E1G-NG-HSp" secondAttribute="trailing" constant="10" id="0jU-nn-di5"/>
+                            <constraint firstItem="E1G-NG-HSp" firstAttribute="top" secondItem="rrh-Vd-W1Q" secondAttribute="bottom" constant="10" id="6l7-zH-IWV"/>
                             <constraint firstItem="Eau-dv-2bO" firstAttribute="leading" secondItem="ABP-wy-2LZ" secondAttribute="leading" id="HoX-fV-dgE"/>
+                            <constraint firstItem="Eau-dv-2bO" firstAttribute="top" secondItem="E1G-NG-HSp" secondAttribute="bottom" constant="5" id="bU0-cD-8TZ"/>
                             <constraint firstItem="Eaa-p1-xBv" firstAttribute="top" secondItem="Eau-dv-2bO" secondAttribute="bottom" id="jkd-Pt-ie5"/>
+                            <constraint firstItem="E1G-NG-HSp" firstAttribute="leading" secondItem="ABP-wy-2LZ" secondAttribute="leading" constant="10" id="jlp-27-BfT"/>
                             <constraint firstAttribute="trailing" secondItem="Eau-dv-2bO" secondAttribute="trailing" id="nlo-dl-GaM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fvE-Rb-l4j"/>
                     <connections>
+                        <outlet property="appSignerTypeSegmentControl" destination="E1G-NG-HSp" id="Din-P3-EYc"/>
                         <outlet property="riskyAppsTableView" destination="Eau-dv-2bO" id="rY0-Jj-kRf"/>
                         <segue destination="Wka-lx-eVI" kind="show" identifier="riskyApplicationDetailsSegue" id="ZjF-yD-ZUy"/>
                     </connections>
