@@ -11,9 +11,7 @@
 #import "Application.h"
 #import "ApplicationDetailsVC.h"
 #import "RiskyAppsVC.h"
-
-static NSString *APP_CATEGORY_USER = @"User";
-static NSString *APP_CATEGORY_SYSTEM = @"System";
+#import "CommonConstants.h"
 
 @interface ApplicationListVC () <UITableViewDataSource,UITableViewDelegate>
 {
