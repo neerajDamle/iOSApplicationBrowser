@@ -16,7 +16,7 @@
 		0726E4B71C590138008BD1E9 /* BrowseAllInstalledApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */; };
 		079271121C5B440F0084E6BD /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 079271111C5B440F0084E6BD /* Application.m */; };
 		07FD9F831C5B83F200FDFB5D /* ApplicationDetailsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FD9F821C5B83F200FDFB5D /* ApplicationDetailsVC.m */; };
-		E0E0CC1B1C67C40500FB4457 /* RiskyAppsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E0CC1A1C67C40500FB4457 /* RiskyAppsVC.m */; settings = {ASSET_TAGS = (); }; };
+		E0E0CC1B1C67C40500FB4457 /* RiskyAppsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E0CC1A1C67C40500FB4457 /* RiskyAppsVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +32,7 @@
 		0726E4AE1C590073008BD1E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0726E4B51C590138008BD1E9 /* BrowseAllInstalledApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowseAllInstalledApplication.h; sourceTree = "<group>"; };
 		0726E4B61C590138008BD1E9 /* BrowseAllInstalledApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowseAllInstalledApplication.m; sourceTree = "<group>"; };
+		0742CB271C68A80D00CBB0A4 /* CommonConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonConstants.h; sourceTree = "<group>"; };
 		079271101C5B440F0084E6BD /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		079271111C5B440F0084E6BD /* Application.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		07FD9F811C5B83F200FDFB5D /* ApplicationDetailsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationDetailsVC.h; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 				0726E4AB1C590073008BD1E9 /* LaunchScreen.storyboard */,
 				0726E4AE1C590073008BD1E9 /* Info.plist */,
 				0726E49D1C590073008BD1E9 /* Supporting Files */,
+				0742CB271C68A80D00CBB0A4 /* CommonConstants.h */,
 			);
 			path = iOSAppBrowser;
 			sourceTree = "<group>";
