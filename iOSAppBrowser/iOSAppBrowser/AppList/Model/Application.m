@@ -202,6 +202,7 @@ static NSDictionary *storeFrontMapping = nil;
         _isRestricted = NO;
         
         _storeCohortMetadata = @"";
+        _uiBackgroundModes = nil;
         _tags = nil;
         _companionAppIdentifier = @"";
     }
@@ -260,6 +261,7 @@ static NSDictionary *storeFrontMapping = nil;
         _isRestricted = NO;
         
         _storeCohortMetadata = @"";
+        _uiBackgroundModes = nil;
         _tags = nil;
         _companionAppIdentifier = @"";
     }
@@ -438,6 +440,10 @@ static NSDictionary *storeFrontMapping = nil;
     if([key isEqualToString:APP_STORE_COHORT_METADATA])
     {
         value = self.storeCohortMetadata;
+    }
+    else if([key isEqualToString:APP_UI_BACKGROUND_MODES])
+    {
+        value = self.uiBackgroundModes;
     }
     else if([key isEqualToString:APP_TAGS])
     {

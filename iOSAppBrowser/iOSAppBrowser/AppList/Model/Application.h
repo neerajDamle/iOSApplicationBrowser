@@ -52,6 +52,7 @@ static NSString *APP_IS_INSTALLED = @"Is Installed";
 static NSString *APP_IS_RESTRICTED = @"Is Restricted";
 
 static NSString *APP_STORE_COHORT_METADATA = @"Store Cohort Metadata";
+static NSString *APP_UI_BACKGROUND_MODES = @"UI Background Modes";
 static NSString *APP_TAGS = @"Application Tags";
 static NSString *APP_COMPANION_APP_IDENTIFIER = @"Companion Application Identifier";
 
@@ -102,6 +103,7 @@ static NSString *APP_COMPANION_APP_IDENTIFIER = @"Companion Application Identifi
 @property (nonatomic,readwrite) BOOL isRestricted;
 
 @property (nonatomic,readwrite) NSString *storeCohortMetadata;
+@property (nonatomic,readwrite) NSArray *uiBackgroundModes;
 @property (nonatomic,readwrite) NSArray *tags;
 @property (nonatomic,readwrite) NSString *companionAppIdentifier;
 

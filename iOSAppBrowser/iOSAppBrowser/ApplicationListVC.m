@@ -43,6 +43,8 @@
 //    [BrowseAllInstalledApplication getAccountDetails];
 //    [BrowseAllInstalledApplication getNetworkDetails];
     
+//    [BrowseAllInstalledApplication getStoreAccountDetails];
+    
     applications = [BrowseAllInstalledApplication browseInstalledAppList];
     [self loadApplicationsForCategory:APP_CATEGORY_USER];
     selectedRow = -1;

@@ -23,6 +23,7 @@
 + (void)getBundleDetails:(NSString *)bundleID;
 + (void)getDeviceDetails;
 + (void)getAccountDetails;
++ (void)getStoreAccountDetails;
 + (void)getNetworkDetails;
 
 @end

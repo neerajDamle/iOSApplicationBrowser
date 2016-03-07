@@ -86,6 +86,8 @@ static NSString *PARAM_PROFILE_VALIDATED = @"profileValidated";
 static NSString *PARAM_IS_INSTALLED = @"isInstalled";
 static NSString *PARAM_IS_RESTRICTED = @"isRestricted";
 
+static NSString *PARAM_UI_BACKGROUND_MODES = @"UIBackgroundModes";
+
 static NSString *PARAM_STORE_COHORT_METADATA = @"storeCohortMetadata";
 static NSString *PARAM_APP_TAGS = @"appTags";
 static NSString *PARAM_COMPANION_APP_IDENTIFIER = @"companionApplicationIdentifier";
@@ -620,6 +622,17 @@ NSMutableArray* browseInstalledAppListForIos7()
             }
         }
         
+        aSelector = NSSelectorFromString(PARAM_UI_BACKGROUND_MODES);
+        NSArray *uiBackgroundModes = @[@"No UI Background Modes"];
+        if([object respondsToSelector:aSelector])
+        {
+            uiBackgroundModes = [object performSelector:aSelector];
+            if(uiBackgroundModes == nil)
+            {
+                uiBackgroundModes = @[@"No UI Background Modes"];
+            }
+        }
+        
         aSelector = NSSelectorFromString(PARAM_APP_TAGS);
         NSArray *appTags = @[@"No tags"];
 //        appTags = @[@"Tag1",@"Tag2",@"Tag3",@"Tag4",@"Tag5"];
@@ -670,11 +683,12 @@ NSMutableArray* browseInstalledAppListForIos7()
 //        NSLog(@"PurchaserDSID: %@",purchaserDSID);
 //        NSLog(@"DownloaderDSID: %@",downloaderDSID);
 //        NSLog(@"ApplicationDSID: %@",applicationDSID);
-        NSLog(@"Store front: %@",storeFront);
+//        NSLog(@"Store front: %@",storeFront);
 //
 //        NSLog(@"Cache GUID: %@",strCacheGUID);
 //        NSLog(@"Unique Identifier: %@",strUniqueIdentifier);
 //        NSLog(@"Mach O UUIDs: %@",machOUUIDs);
+        NSLog(@"UI Background Modes: %@",uiBackgroundModes);
 //
 //        NSLog(@"Bundle flags: %@",strBundleFlags);
 //        NSLog(@"Plist content flags: %@",strPlistContentFlags);
@@ -781,6 +795,7 @@ NSMutableArray* browseInstalledAppListForIos7()
         application.isRestricted = isRestricted;
         
         application.storeCohortMetadata = storeCohortMetadata;
+        application.uiBackgroundModes = uiBackgroundModes;
         application.tags = appTags;
         application.companionAppIdentifier = companionApplicationIdentifier;
 
@@ -872,6 +887,93 @@ NSMutableArray* browseInstalledAppListForIos7()
 //            NSLog(@"Returned %d", boolReturnValue);
             
 //            objc_msgSend([[AADeviceInfo_class alloc] init], sel_getUid("udid"));
+        }
+    }
+}
+
++ (void)getStoreAccountDetails
+{
+    NSString *clName = @"BluetoothManager";
+    Class SSDevice_class = objc_getClass(clName.UTF8String);
+    if(Nil == SSDevice_class)
+    {
+        NSLog(@"SSDevice class is nil");
+        
+        const char *path="/System/Library/PrivateFrameworks/BluetoothManager.framework/BluetoothManager";
+        void* lib = dlopen(path, RTLD_LAZY);
+        if (lib)
+        {
+            SSDevice_class = objc_getClass(clName.UTF8String);
+            if(Nil == SSDevice_class)
+            {
+                NSLog(@"SSDevice class is still nil");
+                return;
+            }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+            
+            /*AVAILABLE VALUES*/
+            //appleIDClientIdentifier
+            //buildVersion
+            //clientInfoHeader
+            //deviceClass
+            //deviceColor
+            //deviceEnclosureColor
+            //deviceInfoDictionary
+            //deviceName
+            //hasCellularCapability
+            //modelNumber
+            //osName
+            //osVersion
+            //productType
+            //productVersion
+            //regionCode
+            //storageCapacity
+            //userAgentHeader
+            
+            /*UNAVAILABLE VALUES*/
+            //accountKind
+            //accountName
+            //ITunesPassSerialNumber
+            //firstName
+            //serialNumber
+            //udid
+            //wifiMacAddress
+            
+            SEL selector = NSSelectorFromString(@"audioConnected");
+            NSObject *ssDeviceObj = [[SSDevice_class alloc] init];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[SSDevice_class instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:ssDeviceObj];
+            [invocation invoke];
+            id returnValue;
+//            [invocation getReturnValue:&returnValue];
+//            NSLog(@"ret val class: %@",[returnValue class]);
+//            if([returnValue isKindOfClass:[NSArray class]])
+//            {
+//                NSArray *devices = returnValue;
+//                NSLog(@"Count: %ld",(unsigned long)devices.count);
+//                for (id object in devices)
+//                {
+//                    SEL aSelector = NSSelectorFromString(@"name");
+//                    NSString *name = @"NA";
+//                    if([object respondsToSelector:aSelector])
+//                    {
+//                        name = [object performSelector:aSelector];
+//                        if(name == nil)
+//                        {
+//                            name = @"NA";
+//                        }
+//                    }
+//                }
+//            }
+//            NSLog(@"Returned %@", returnValue);
+            
+                        BOOL boolReturnValue;
+                        [invocation getReturnValue:&boolReturnValue];
+                        NSLog(@"Returned %d", boolReturnValue);
+            
+//                        objc_msgSend([[SSDevice_class alloc] init], sel_getUid("udid"));
         }
     }
 }
